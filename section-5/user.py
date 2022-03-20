@@ -57,7 +57,8 @@ class UserRegister(Resource):
     def post(self):
         data = UserRegister.parser.parse_args()
 
-        print(f'#### data {data}')
+        if User.find_by_username(data['username']):
+            return {"message": 'A user with username {} already exists.'.format(data['username'])}, 400
 
         connection = sqlite3.connect('section-5/data.sqlite')
         cursor = connection.cursor()
