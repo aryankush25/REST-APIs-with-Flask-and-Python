@@ -22,7 +22,7 @@ class Item(Resource):
         connection.close()
 
         if (row):
-            return {"item": {'name': row[0], 'price': row[1]}}, 200
+            return {"item": {'id': row[0], 'name': row[1], 'price': row[2]}}, 200
         else:
             return {"message": "Item not found"}, 404
 
