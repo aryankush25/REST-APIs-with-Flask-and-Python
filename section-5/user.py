@@ -10,7 +10,7 @@ class User:
 
     @classmethod
     def find_by_username(cls, username):
-        connection = sqlite3.connect('section-5/data.sqlite')
+        connection = sqlite3.connect('data.sqlite')
         cursor = connection.cursor()
 
         query = 'SELECT * FROM users WHERE username=?;'
@@ -29,7 +29,7 @@ class User:
 
     @classmethod
     def find_by_id(cls, _id):
-        connection = sqlite3.connect('section-5/data.sqlite')
+        connection = sqlite3.connect('data.sqlite')
         cursor = connection.cursor()
 
         query = 'SELECT * FROM users WHERE id = ?;'
@@ -60,7 +60,7 @@ class UserRegister(Resource):
         if User.find_by_username(data['username']):
             return {"message": 'A user with username {} already exists.'.format(data['username'])}, 400
 
-        connection = sqlite3.connect('section-5/data.sqlite')
+        connection = sqlite3.connect('data.sqlite')
         cursor = connection.cursor()
         query = 'INSERT INTO users VALUES (NULL, ?, ?);'
         cursor.execute(query, (data['username'], data['password'],))

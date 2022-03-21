@@ -12,7 +12,7 @@ class Item(Resource):
 
     @jwt_required()
     def get(self, name):
-        connection = sqlite3.connect('section-5/data.sqlite')
+        connection = sqlite3.connect('data.sqlite')
         cursor = connection.cursor()
 
         query = 'SELECT * FROM items WHERE name=?;'

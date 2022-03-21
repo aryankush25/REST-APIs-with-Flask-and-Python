@@ -1,6 +1,6 @@
 import sqlite3
 
-connection = sqlite3.connect('section-5/data.sqlite')
+connection = sqlite3.connect('data.sqlite')
 
 cursor = connection.cursor()
 
