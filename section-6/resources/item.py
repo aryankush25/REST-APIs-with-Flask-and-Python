@@ -35,7 +35,7 @@ class Item(Resource):
         except:
             return {"message": "An error occurred while inserting item "}, 500
 
-        return item, 201
+        return item.json(), 201
 
     @jwt_required()
     def delete(self, name):
@@ -58,17 +58,18 @@ class Item(Resource):
         data = Item.parser.parse_args()
 
         item = ItemModel.find_by_name(name)
-        updated_item = ItemModel(name, data['price'])
 
         try:
             if item is None:
-                updated_item.insert()
+                item = ItemModel(None, name, data['price'])
+                item.insert()
             else:
-                updated_item.update()
+                item = ItemModel(item.id, name, data['price'])
+                item.update()
         except:
             return {"message": "An error occurred while putting item "}, 500
 
-        return updated_item.json(), 200
+        return item.json(), 200
 
 
 class ItemList(Resource):
