@@ -4,9 +4,6 @@ from flask_jwt import jwt_required
 from models.item import ItemModel
 
 
-items = []
-
-
 class Item(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('price', type=float, required=True,
@@ -31,7 +28,7 @@ class Item(Resource):
         item = ItemModel(None, name, data['price'])
 
         try:
-            item.insert()
+            item.save_to_db()
         except:
             return {"message": "An error occurred while inserting item "}, 500
 
@@ -39,17 +36,12 @@ class Item(Resource):
 
     @jwt_required()
     def delete(self, name):
-        if ItemModel.find_by_name(name) is None:
+        item = ItemModel.find_by_name(name)
+
+        if item is None:
             return {"message": f'An item with name {name} does not exists.'}, 400
 
-        connection = sqlite3.connect('data.sqlite')
-        cursor = connection.cursor()
-
-        query = 'DELETE FROM items WHERE name=?;'
-
-        cursor.execute(query, (name,))
-        connection.commit()
-        connection.close()
+        item.delete_from_db()
 
         return {'message': 'Item deleted.'}, 200
 
@@ -62,10 +54,10 @@ class Item(Resource):
         try:
             if item is None:
                 item = ItemModel(None, name, data['price'])
-                item.insert()
+                item.save_to_db()
             else:
-                item = ItemModel(item.id, name, data['price'])
-                item.update()
+                item.price = data['price']
+                item.save_to_db()
         except:
             return {"message": "An error occurred while putting item "}, 500
 
