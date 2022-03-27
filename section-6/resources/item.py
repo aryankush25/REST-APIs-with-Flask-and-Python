@@ -25,7 +25,7 @@ class Item(Resource):
 
         data = Item.parser.parse_args()
 
-        item = ItemModel(None, name, data['price'])
+        item = ItemModel(name, data['price'])
 
         try:
             item.save_to_db()
@@ -53,7 +53,7 @@ class Item(Resource):
 
         try:
             if item is None:
-                item = ItemModel(None, name, data['price'])
+                item = ItemModel(name, data['price'])
             else:
                 item.price = data['price']
 
