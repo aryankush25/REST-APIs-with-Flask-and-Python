@@ -54,10 +54,10 @@ class Item(Resource):
         try:
             if item is None:
                 item = ItemModel(None, name, data['price'])
-                item.save_to_db()
             else:
                 item.price = data['price']
-                item.save_to_db()
+
+            item.save_to_db()
         except:
             return {"message": "An error occurred while putting item "}, 500
 
